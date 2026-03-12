@@ -1,6 +1,6 @@
 # QA Analytical Report: Task Tracker System
 
-### 1. Распределение тест-кейсов по приоритетам
+### 1. Розподіл тест-кейсів за пріоритетом
 |test_priority|total_cases|
 |-------------|-----------|
 |Critical|25|

@@ -9,10 +9,10 @@
 -----------------------------------------------------------
 
 -- 1. Аналіз покриття за пріоритетами (Розподіл тест-кейсів)
-SELECT priority, COUNT(*) AS total_cases FROM public.test_cases GROUP BY priority;
+SELECT test_priority, COUNT(*) AS total_cases FROM public.test_cases GROUP BY test_priority;
 
 -- 2. Перевірка якості: Кейси з порожніми кроками або результатами (Аудит документації)
-SELECT case_id, case_title FROM public.test_cases WHERE steps IS NULL OR expected_result IS NULL;
+SELECT case_id, case_title FROM public.test_cases WHERE test_steps IS NULL OR expected_result IS NULL;
 
 -- 3. Список кейсів для регресійного тестування (Фільтр за ключовими словами)
 SELECT * FROM public.test_cases WHERE description LIKE '%Regression%' OR case_title LIKE '%Critical%';
@@ -38,7 +38,7 @@ FROM public.test_cases GROUP BY module_name;
 -----------------------------------------------------------
 
 -- 6. Усі відкриті баги (крім закритих)
-SELECT title, severity, status FROM public.bug_reports WHERE status != 'Closed';
+SELECT title, severity, test_status FROM public.bug_reports WHERE status != 'Closed';
 
 -- 7. Розподіл за серйозністю (Severity Distribution)
 SELECT severity, COUNT(*) as bug_count FROM public.bug_reports GROUP BY severity;
@@ -76,4 +76,5 @@ FROM public.bug_reports;
 SELECT title, COUNT(*) FROM public.bug_reports GROUP BY title HAVING COUNT(*) > 1;
 
 -- 15. Баги, створені без прив'язки до конкретного кейсу (Контроль цілісності даних)
+
 SELECT * FROM public.bug_reports WHERE case_id IS NULL;

@@ -8,19 +8,16 @@
 -----------------------------------------------------------
 
 -- 1. Аналіз покриття за пріоритетами (Розподіл тест-кейсів)
--- Використовуємо коректну назву: test_priority
 SELECT test_priority, COUNT(*) AS total_cases 
 FROM public.test_cases 
 GROUP BY test_priority;
 
 -- 2. Перевірка якості: Кейси з порожніми кроками або результатами
--- Використовуємо: test_steps
 SELECT case_id, case_title 
 FROM public.test_cases 
 WHERE test_steps IS NULL OR expected_result IS NULL;
 
--- 3. Топ-10 найскладніших кейсів (за обсягом кроків)
--- Використовуємо для формування Smoke-тесту
+-- 3. Топ-10 найскладніших кейсів (Аналіз трудомісткості)
 SELECT case_id, case_title, LENGTH(test_steps) as complexity_score
 FROM public.test_cases 
 WHERE test_steps IS NOT NULL
@@ -28,7 +25,6 @@ ORDER BY complexity_score DESC
 LIMIT 10;
 
 -- 4. "Стабільні" кейси (для яких не знайдено жодного багу)
--- Використовуємо LEFT JOIN для пошуку кейсів без прив'язаних багів
 SELECT tc.case_id, tc.case_title 
 FROM public.test_cases tc
 LEFT JOIN public.bug_reports br ON tc.case_id = br.case_id
@@ -66,8 +62,7 @@ WHERE title ILIKE '%Auth%'
    OR title ILIKE '%Login%' 
    OR title ILIKE '%User%';
 
--- 9. Мапінг: Баг + Назва відповідного тест-кейсу (JOIN)
-
+-- 9. Мапінг: Баг + Назва відповідного тест-кейсу 
 SELECT br.bug_id, br.title AS bug_title, tc.case_title 
 FROM public.bug_reports br
 JOIN public.test_cases tc ON br.case_id = tc.case_id;
@@ -109,4 +104,5 @@ HAVING COUNT(*) > 1;
 -- 15. Контроль цілісності: Баги без прив'язки до кейсу
 SELECT * FROM public.bug_reports 
 WHERE case_id IS NULL;
+
 

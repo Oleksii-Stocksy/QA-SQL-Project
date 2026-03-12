@@ -1,4 +1,6 @@
 # 📊 Project: Test Management Database (QA)
+### 🗺️ Database Schema
+![Database ER Diagram](./database_schema.png)
 
 ### ℹ️ Description
 This project showcases a relational database structure (PostgreSQL) designed for tracking **Test Cases** and **Bug Reports**. It demonstrates expertise in schema design, data integrity enforcement, and crafting complex SQL queries to solve real-world QA challenges.

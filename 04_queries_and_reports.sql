@@ -103,8 +103,3 @@ HAVING COUNT(*) > 1;
 -- 15. Контроль цілісності: Баги без прив'язки до кейсу
 SELECT * FROM public.bug_reports 
 WHERE case_id IS NULL;
-
--- 15. Баги, створені без прив'язки до конкретного кейсу (Контроль цілісності даних)
-
-SELECT * FROM public.bug_reports WHERE case_id IS NULL;
-

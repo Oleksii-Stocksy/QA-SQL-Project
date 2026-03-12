@@ -4,26 +4,25 @@
 */
 
 -----------------------------------------------------------
--- PART 1: TEST CASE AUDIT & COVERAGE (1-5)
--- ЧАСТИНА 1: АУДИТ ТЕСТ-КЕЙСІВ ТА ПОКРИТТЯ
+-- ЧАСТИНА 1: АУДИТ ТЕСТ-КЕЙСІВ ТА ПОКРИТТЯ (1-5)
 -- (Логіка: Спочатку перевіряємо базу нашої документації)
 -----------------------------------------------------------
 
--- 1. Анализ покрытия по приоритетам (Priority Distribution)
+-- 1. Аналіз покриття за пріоритетами (Розподіл тест-кейсів)
 SELECT priority, COUNT(*) AS total_cases FROM public.test_cases GROUP BY priority;
 
--- 2. Проверка качества: Кейсы с пустыми шагами или результатами (Audit)
+-- 2. Перевірка якості: Кейси з порожніми кроками або результатами (Аудит документації)
 SELECT case_id, case_title FROM public.test_cases WHERE steps IS NULL OR expected_result IS NULL;
 
--- 3. Список кейсов для регрессии (Keyword filter)
+-- 3. Список кейсів для регресійного тестування (Фільтр за ключовими словами)
 SELECT * FROM public.test_cases WHERE description LIKE '%Regression%' OR case_title LIKE '%Critical%';
 
--- 4. "Стабильные" кейсы (у которых нет ни одного бага)
+-- 4. "Стабільні" кейси (для яких не знайдено жодного багу)
 SELECT tc.case_id, tc.case_title FROM public.test_cases tc
 LEFT JOIN public.bug_reports br ON tc.case_id = br.case_id
 WHERE br.bug_id IS NULL;
 
--- 5. Группировка кейсов по логическим модулям (Range grouping)
+-- 5. Групування кейсів за логічними модулями (Групування за діапазонами ID)
 SELECT 
     CASE 
         WHEN case_id BETWEEN 1 AND 20 THEN 'Core Auth'
@@ -34,39 +33,38 @@ FROM public.test_cases GROUP BY module_name;
 
 
 -----------------------------------------------------------
--- PART 2: BUG REPORTING & ANALYTICS (6-15)
--- ЧАСТИНА 2: АНАЛІТИКА БАГ-РЕПОРТІВ
+-- ЧАСТИНА 2: АНАЛІТИКА БАГ-РЕПОРТІВ (6-15)
 -- (Логіка: Аналіз результатів тестування та знайдених дефектів)
 -----------------------------------------------------------
 
--- 6. Все открытые баги (кроме закрытых)
+-- 6. Усі відкриті баги (крім закритих)
 SELECT title, severity, status FROM public.bug_reports WHERE status != 'Closed';
 
--- 7. Группировка по серьезности (Severity Distribution)
+-- 7. Розподіл за серйозністю (Severity Distribution)
 SELECT severity, COUNT(*) as bug_count FROM public.bug_reports GROUP BY severity;
 
--- 8. Поиск багов по модулю через ключевые слова
+-- 8. Пошук багів за модулем через ключові слова в назві
 SELECT * FROM public.bug_reports WHERE title LIKE '%[Auth]%';
 
--- 9. Маппинг: Баг + Название тест-кейса (JOIN)
+-- 9. Мапінг: Баг + Назва відповідного тест-кейсу (JOIN)
 SELECT br.bug_id, br.title AS bug_title, tc.case_title 
 FROM public.bug_reports br
 JOIN public.test_cases tc ON br.case_id = tc.case_id;
 
--- 10. Самый критический функционал (Топ кейсов по количеству багов)
+-- 10. Найбільш критичний функціонал (Топ кейсів за кількістю багів)
 SELECT tc.case_title, COUNT(br.bug_id) AS total_bugs
 FROM public.test_cases tc
 LEFT JOIN public.bug_reports br ON tc.case_id = br.case_id
 GROUP BY tc.case_title ORDER BY total_bugs DESC LIMIT 1;
 
--- 11. Распределение багов по приоритету исправления
+-- 11. Розподіл багів за пріоритетом виправлення
 SELECT priority, COUNT(*) AS bug_count FROM public.bug_reports GROUP BY priority ORDER BY bug_count DESC;
 
--- 12. Процентное соотношение статусов (Release Readiness Metric)
+-- 12. Відсоткове співвідношення статусів (Метрика готовності релізу)
 SELECT status, COUNT(*) as count, ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) as percentage
 FROM public.bug_reports GROUP BY status;
 
--- 13. Классификация действий на основе серьезности (CASE)
+-- 13. Класифікація дій на основі серйозності багу (CASE)
 SELECT title, severity,
     CASE 
         WHEN severity IN ('Blocker', 'Critical') THEN 'Immediate Action'
@@ -74,8 +72,8 @@ SELECT title, severity,
     END AS action_plan
 FROM public.bug_reports;
 
--- 14. Поиск потенциальных дубликатов (Duplicate check)
+-- 14. Пошук потенційних дублікатів багів (Duplicate check)
 SELECT title, COUNT(*) FROM public.bug_reports GROUP BY title HAVING COUNT(*) > 1;
 
--- 15. Баги, созданные без привязки к конкретному кейсу (Data Integrity)
+-- 15. Баги, створені без прив'язки до конкретного кейсу (Контроль цілісності даних)
 SELECT * FROM public.bug_reports WHERE case_id IS NULL;

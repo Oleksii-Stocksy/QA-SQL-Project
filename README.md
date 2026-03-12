@@ -11,6 +11,7 @@ This project showcases a relational database structure (PostgreSQL) designed for
 1. **01_database_schema.sql** — DDL script that defines the tables for `test_cases` and `bug_reports`, including primary and foreign keys.
 2. **02_initial_data.sql** — DML script containing a set of 50 mock test records to populate the database.
 3. **03_logic_fix.sql** — A specialized script to align bug reports with their corresponding test cases using advanced mapping logic (includes UA/EN comments).
+4. **[QA_Analytical_Report.md](./QA_Analytical_Report.md)** — Full analytical report with SQL query results and QA insights.
 
 ### 🔍 Key Skills Demonstrated
 * **Database Design:** Implementing One-to-Many (1:N) relationships and referential integrity.

@@ -19,10 +19,13 @@ SELECT case_id, case_title
 FROM public.test_cases 
 WHERE test_steps IS NULL OR expected_result IS NULL;
 
--- 3. Список кейсів для регресійного тестування 
--- Шукаємо за ключовими словами у case_title (оскільки description відсутній)
-SELECT * FROM public.test_cases 
-WHERE case_title LIKE '%Regression%' OR case_title LIKE '%Critical%';
+-- 3. Топ-10 найскладніших кейсів (за обсягом кроків)
+-- Використовуємо для формування Smoke-тесту
+SELECT case_id, case_title, LENGTH(test_steps) as complexity_score
+FROM public.test_cases 
+WHERE test_steps IS NOT NULL
+ORDER BY complexity_score DESC
+LIMIT 10;
 
 -- 4. "Стабільні" кейси (для яких не знайдено жодного багу)
 -- Використовуємо LEFT JOIN для пошуку кейсів без прив'язаних багів
@@ -56,9 +59,12 @@ SELECT severity, COUNT(*) as bug_count
 FROM public.bug_reports 
 GROUP BY severity;
 
--- 8. Пошук багів за модулем через назву
-SELECT * FROM public.bug_reports 
-WHERE title LIKE '%[Auth]%';
+-- 8. Аналіз багів, пов'язаних із доступом та авторизацією
+SELECT bug_id, title, severity, status 
+FROM public.bug_reports 
+WHERE title ILIKE '%Auth%' 
+   OR title ILIKE '%Login%' 
+   OR title ILIKE '%User%';
 
 -- 9. Мапінг: Баг + Назва відповідного тест-кейсу (JOIN)
 
@@ -103,3 +109,4 @@ HAVING COUNT(*) > 1;
 -- 15. Контроль цілісності: Баги без прив'язки до кейсу
 SELECT * FROM public.bug_reports 
 WHERE case_id IS NULL;
+

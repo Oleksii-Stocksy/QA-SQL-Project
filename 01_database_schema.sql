@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict lBecVDBGPigckspQ44M3p2dt6JzpBO1Tex4kG7vIV7ndaiLPhhgaBlZO6vFG8Qo
+\restrict ShQge7gRND1J3UYFTu2f5phbsm4rPXujFWNtMDaPpeR1OvUl3TAse6Lid86nF4L
 
 -- Dumped from database version 18.3
 -- Dumped by pg_dump version 18.3
 
--- Started on 2026-03-12 11:31:21
+-- Started on 2026-03-13 09:28:35
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -26,7 +26,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 222 (class 1259 OID 16616)
+-- TOC entry 220 (class 1259 OID 16616)
 -- Name: bug_reports; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -59,7 +59,7 @@ CREATE TABLE public.bug_reports (
 
 
 --
--- TOC entry 221 (class 1259 OID 16615)
+-- TOC entry 219 (class 1259 OID 16615)
 -- Name: bug_reports_bug_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -73,8 +73,8 @@ CREATE SEQUENCE public.bug_reports_bug_id_seq
 
 
 --
--- TOC entry 4942 (class 0 OID 0)
--- Dependencies: 221
+-- TOC entry 4934 (class 0 OID 0)
+-- Dependencies: 219
 -- Name: bug_reports_bug_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
@@ -82,7 +82,7 @@ ALTER SEQUENCE public.bug_reports_bug_id_seq OWNED BY public.bug_reports.bug_id;
 
 
 --
--- TOC entry 224 (class 1259 OID 16685)
+-- TOC entry 222 (class 1259 OID 16685)
 -- Name: test_cases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -101,7 +101,7 @@ CREATE TABLE public.test_cases (
 
 
 --
--- TOC entry 223 (class 1259 OID 16684)
+-- TOC entry 221 (class 1259 OID 16684)
 -- Name: test_cases_case_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -116,41 +116,7 @@ ALTER TABLE public.test_cases ALTER COLUMN case_id ADD GENERATED ALWAYS AS IDENT
 
 
 --
--- TOC entry 220 (class 1259 OID 16400)
--- Name: test_table; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.test_table (
-    id integer NOT NULL,
-    info text
-);
-
-
---
--- TOC entry 219 (class 1259 OID 16399)
--- Name: test_table_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.test_table_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- TOC entry 4943 (class 0 OID 0)
--- Dependencies: 219
--- Name: test_table_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.test_table_id_seq OWNED BY public.test_table.id;
-
-
---
--- TOC entry 4766 (class 2604 OID 16619)
+-- TOC entry 4760 (class 2604 OID 16619)
 -- Name: bug_reports bug_id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -158,15 +124,7 @@ ALTER TABLE ONLY public.bug_reports ALTER COLUMN bug_id SET DEFAULT nextval('pub
 
 
 --
--- TOC entry 4765 (class 2604 OID 16403)
--- Name: test_table id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.test_table ALTER COLUMN id SET DEFAULT nextval('public.test_table_id_seq'::regclass);
-
-
---
--- TOC entry 4780 (class 2606 OID 16633)
+-- TOC entry 4772 (class 2606 OID 16633)
 -- Name: bug_reports bug_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -175,7 +133,7 @@ ALTER TABLE ONLY public.bug_reports
 
 
 --
--- TOC entry 4788 (class 2606 OID 16699)
+-- TOC entry 4780 (class 2606 OID 16699)
 -- Name: test_cases test_cases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -184,16 +142,7 @@ ALTER TABLE ONLY public.test_cases
 
 
 --
--- TOC entry 4778 (class 2606 OID 16408)
--- Name: test_table test_table_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.test_table
-    ADD CONSTRAINT test_table_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4781 (class 1259 OID 16679)
+-- TOC entry 4773 (class 1259 OID 16679)
 -- Name: idx_bug_reports_assignee; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -201,7 +150,7 @@ CREATE INDEX idx_bug_reports_assignee ON public.bug_reports USING btree (assigne
 
 
 --
--- TOC entry 4782 (class 1259 OID 16682)
+-- TOC entry 4774 (class 1259 OID 16682)
 -- Name: idx_bug_reports_case_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -209,7 +158,7 @@ CREATE INDEX idx_bug_reports_case_id ON public.bug_reports USING btree (case_id)
 
 
 --
--- TOC entry 4783 (class 1259 OID 16681)
+-- TOC entry 4775 (class 1259 OID 16681)
 -- Name: idx_bug_reports_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -217,7 +166,7 @@ CREATE INDEX idx_bug_reports_created_at ON public.bug_reports USING btree (creat
 
 
 --
--- TOC entry 4784 (class 1259 OID 16680)
+-- TOC entry 4776 (class 1259 OID 16680)
 -- Name: idx_bug_reports_priority_severity; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -225,7 +174,7 @@ CREATE INDEX idx_bug_reports_priority_severity ON public.bug_reports USING btree
 
 
 --
--- TOC entry 4785 (class 1259 OID 16678)
+-- TOC entry 4777 (class 1259 OID 16678)
 -- Name: idx_bug_reports_status; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -233,7 +182,7 @@ CREATE INDEX idx_bug_reports_status ON public.bug_reports USING btree (status);
 
 
 --
--- TOC entry 4786 (class 1259 OID 16683)
+-- TOC entry 4778 (class 1259 OID 16683)
 -- Name: idx_bug_reports_title; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -241,7 +190,7 @@ CREATE INDEX idx_bug_reports_title ON public.bug_reports USING btree (title);
 
 
 --
--- TOC entry 4789 (class 2606 OID 16702)
+-- TOC entry 4781 (class 2606 OID 16702)
 -- Name: bug_reports fk_bug_to_cases; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -249,11 +198,11 @@ ALTER TABLE ONLY public.bug_reports
     ADD CONSTRAINT fk_bug_to_cases FOREIGN KEY (case_id) REFERENCES public.test_cases(case_id);
 
 
--- Completed on 2026-03-12 11:31:21
+-- Completed on 2026-03-13 09:28:35
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict lBecVDBGPigckspQ44M3p2dt6JzpBO1Tex4kG7vIV7ndaiLPhhgaBlZO6vFG8Qo
+\unrestrict ShQge7gRND1J3UYFTu2f5phbsm4rPXujFWNtMDaPpeR1OvUl3TAse6Lid86nF4L
 
